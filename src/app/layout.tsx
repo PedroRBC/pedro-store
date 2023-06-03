@@ -1,12 +1,22 @@
-import 'tailwindcss/tailwind.css'
+import './globals.css'
 import { Inter } from 'next/font/google'
 import { Providers } from '@/redux/provider'
+import { Metadata } from 'next'
+import { ThemeProvider } from '@/components/theme-provider'
+import { cn } from '@/lib/utils'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-  title: 'Pedro Store',
+export const metadata: Metadata = {
+  title: {
+    default: 'Pedro Store',
+    template: '%s | Pedro Store'
+  },
   description: 'Loja do pedro :)',
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
 }
 
 export default function RootLayout({
@@ -16,9 +26,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Providers>
-        <body className={`${inter.className}`} >{children}</body>
+      <body className={cn(inter.className,
+        "min-h-screen bg-background antialiased"
+      )}>
+        <Providers>
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem >
+            <main className="flex min-h-screen bg-background text-white" >
+              {children}
+            </main>
+          </ThemeProvider>
       </Providers>
+      </body>
     </html>
   )
 }
