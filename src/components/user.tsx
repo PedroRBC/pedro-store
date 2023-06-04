@@ -15,7 +15,7 @@ export function User() {
         dispatch(logout())
     }
 
-    if (user.isAuthenticated) {
+    if (user.token) {
         return (
 
             <div className="flex flex-col items-center" >

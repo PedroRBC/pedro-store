@@ -41,7 +41,7 @@ export function LoginForm() {
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values)
-        dispatch(login({ username: values.username, password: values.password }));
+        dispatch(login(values.username));
         handleSubmit()
     }
 
