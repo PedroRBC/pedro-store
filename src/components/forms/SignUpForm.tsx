@@ -112,7 +112,7 @@ export function SingUpForm() {
                             )}
                         />
                     </div>
-                    <Button type="submit">Continue</Button>
+                    <Button type="submit" disabled={isLoading} >Continue</Button>
                 </form>
             </Form>
             <div className="relative">

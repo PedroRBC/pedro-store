@@ -104,7 +104,7 @@ export function LoginForm() {
                             )}
                         />
                     </div>
-                    <Button type="submit">Login</Button>
+                    <Button type="submit" disabled={isLoading} >Login</Button>
                 </form>
             </Form>
             <div className="relative">
