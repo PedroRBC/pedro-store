@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { Providers } from '@/redux/provider'
 import { Metadata } from 'next'
 import { cn } from '@/lib/utils'
+import { Header } from '@/components/header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,13 +27,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className,
-        "min-h-screen bg-background antialiased"
+        "min-h-screen bg-background antialiased text-primary"
       )}>
         <Providers>
-          <main className="flex min-h-screen bg-background text-primary" >
-              {children}
+          <main className="relative flex min-h-screen flex-col" >
+            <Header />
+            <div className='flex flex-1' >{children}</div>
+
           </main>
-      </Providers>
+        </Providers>
       </body>
     </html>
   )

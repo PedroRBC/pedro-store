@@ -5,6 +5,9 @@ import {
     X,
     Eye,
     EyeOff,
+    SunMedium,
+    Moon,
+    Laptop,
     type Icon as LucideIcon,
 } from "lucide-react"
 
@@ -16,6 +19,9 @@ export const Icons = {
     eyeOff: EyeOff,
     logOut: LogOut,
     spinner: Loader2,
+    sun: SunMedium,
+    moon: Moon,
+    laptop: Laptop,
     gitHub: (props: LucideProps) => (
         <svg viewBox="0 0 438.549 438.549" {...props}>
             <path
