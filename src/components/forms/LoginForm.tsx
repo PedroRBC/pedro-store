@@ -122,7 +122,7 @@ export function LoginForm() {
                 </div>
             </div>
 
-            <div className="flex items-center justify-center flex-row space-x-2" >
+            <div className="flex flex-row items-center justify-center space-x-2" >
                 <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading} >
                     <Icons.gitHub className="h-4 w-4" />
                 </Button>

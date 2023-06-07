@@ -11,7 +11,7 @@ export const metadata = {
 export default function Signup() {
 
     return (
-        <div className="container min-h-screen relative flex flex-col justify-center md:min-h-0 md:grid max-w-none md:grid-cols-2">
+        <div className="container relative flex min-h-screen max-w-none flex-col justify-center md:grid md:min-h-0 md:grid-cols-2">
             <Link
                 href="/login"
                 className="absolute right-8 top-8 text-xl"
@@ -19,11 +19,11 @@ export default function Signup() {
                 Login
             </Link>
 
-            <div className="hidden md:flex relative p-8 justify-center flex-col border-r border-border " >
+            <div className="relative hidden flex-col justify-center border-r border-border p-8 md:flex " >
                 <Lottie animationData={Auth} />
             </div>
 
-            <div className="p-8 flex" >
+            <div className="flex p-8" >
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]" >
                     <div className="flex flex-col space-y-2 text-center">
                         <h1 className="text-2xl font-semibold tracking-tight">
