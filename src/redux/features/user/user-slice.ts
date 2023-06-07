@@ -1,6 +1,6 @@
 'use client';
 
-import { setCookie, getCookie } from 'cookies-next';
+import { setCookie, getCookie, deleteCookie } from 'cookies-next';
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const CookieTime = 7 * 24 * 60 * 60;
@@ -31,6 +31,8 @@ export const userSlice = createSlice({
             state.token = null;
             state.username = "";
             state.email = "";
+            deleteCookie('token');
+            deleteCookie('username');
         }
     },
 });
