@@ -2,7 +2,6 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import { Providers } from '@/redux/provider'
 import { Metadata } from 'next'
-import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -30,11 +29,9 @@ export default function RootLayout({
         "min-h-screen bg-background antialiased"
       )}>
         <Providers>
-          <ThemeProvider attribute='class' defaultTheme='system' enableSystem >
-            <main className="flex min-h-screen bg-background text-white" >
+          <main className="flex min-h-screen bg-background text-primary" >
               {children}
-            </main>
-          </ThemeProvider>
+          </main>
       </Providers>
       </body>
     </html>
