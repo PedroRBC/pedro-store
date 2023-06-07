@@ -104,7 +104,11 @@ export function LoginForm() {
                             )}
                         />
                     </div>
-                    <Button type="submit" disabled={isLoading} >Login</Button>
+                    <Button type="submit" disabled={isLoading} >
+                        {isLoading ? (
+                            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                        ) : ("Login")}
+                    </Button>
                 </form>
             </Form>
             <div className="relative">
@@ -117,14 +121,18 @@ export function LoginForm() {
                     </span>
                 </div>
             </div>
-            <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading}>
-                {isLoading ? (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                    <Icons.gitHub className="mr-2 h-4 w-4" />
-                )}{" "}
-                Github
-            </Button>
+
+            <div className="flex items-center justify-center flex-row space-x-2" >
+                <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading} >
+                    <Icons.gitHub className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading} >
+                    <Icons.google className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading} >
+                    <Icons.facebook className="h-4 w-4" />
+                </Button>
+            </div>
         </>
     )
 }
