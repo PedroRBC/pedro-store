@@ -1,9 +1,9 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { Providers } from '@/redux/provider'
 import { Metadata } from 'next'
 import { cn } from '@/lib/utils'
 import { Header } from '@/components/header'
+import { Providers } from './providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
