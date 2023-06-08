@@ -1,15 +1,21 @@
-import { ThemeProvider } from "@/components/theme-provider"
-import { ReduxProvider } from "@/redux/redux-provider"
-
+import { ClerkProvider } from '@clerk/nextjs'
+import { ClientProviders } from './providers-client'
 
 export function Providers({ children }: {
     children: React.ReactNode
 }) {
     return (
-        <ThemeProvider attribute='class' defaultTheme='system' enableSystem >
-            <ReduxProvider>
+        <ClerkProvider
+            appearance={{
+                layout: {
+                    socialButtonsPlacement: "bottom",
+                    socialButtonsVariant: "iconButton",
+                }
+            }}
+        >
+            <ClientProviders>
                 {children}
-            </ReduxProvider>
-        </ThemeProvider>
+            </ClientProviders>
+        </ClerkProvider>
     )
 }
