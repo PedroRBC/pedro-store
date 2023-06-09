@@ -15,8 +15,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { Icons } from "../icons"
-import { useSignIn } from "@clerk/nextjs"
 
+import { signIn, useSession } from 'next-auth/react'
 
 const formSchema = z.object({
     identifier: z.string().min(4).max(50),
@@ -28,7 +28,6 @@ export function LoginForm() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [error, setError] = useState("");
-    const { isLoaded, signIn, setActive } = useSignIn()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -37,24 +36,10 @@ export function LoginForm() {
             password: ""
         },
     })
-    if (!isLoaded) return null;
 
     const onSubmit = ({ password, identifier }: z.infer<typeof formSchema>) => {
-        setIsLoading(true)
-        signIn.create({
-            identifier,
-            password
-        }).then((result) => {
-            if (result.status === 'complete') {
-                setActive({ session: result.createdSessionId })
-            }
-        }).catch((err) => {
-            console.log()
-            setError(err.errors[0].longMessage);
-        })
-            .finally(() => {
-                setIsLoading(false)
-            })
+        handleSubmit()
+
     }
 
     function handleSubmit() {
@@ -136,10 +121,16 @@ export function LoginForm() {
             </div>
 
             <div className="flex flex-row items-center justify-center space-x-2" >
-                <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading} >
+                <Button variant="outline" type="button" onClick={() => {
+                    signIn("github", {
+                        callbackUrl: '/'
+                    })
+                }} disabled={isLoading} >
                     <Icons.gitHub className="h-4 w-4" />
                 </Button>
-                <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading} >
+                <Button variant="outline" type="button" onClick={() => signIn("google", {
+                    callbackUrl: '/'
+                })} disabled={isLoading} >
                     <Icons.google className="h-4 w-4" />
                 </Button>
                 <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading} >
