@@ -1,9 +1,10 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
-import { Providers } from '@/redux/provider'
 import { Metadata } from 'next'
 import { cn } from '@/lib/utils'
 import { Header } from '@/components/header'
+import { TailwindIndicator } from '@/components/tailwind-indicator'
+import { Providers } from './providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning >
       <body className={cn(inter.className,
         "min-h-screen bg-background antialiased text-primary"
       )}>
@@ -36,6 +37,7 @@ export default function RootLayout({
 
           </main>
         </Providers>
+        <TailwindIndicator />
       </body>
     </html>
   )
