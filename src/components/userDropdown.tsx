@@ -36,8 +36,8 @@ export function UserDropdown() {
                 <DropdownMenuTrigger asChild>
                     {session ? (
                         <Avatar className='cursor-pointer'>
-                            <AvatarImage src={session.user?.image} />
-                            <AvatarFallback>{session.user?.name}</AvatarFallback>
+                            <AvatarImage src={session.user?.image!} />
+                            <AvatarFallback>{session.user?.name!}</AvatarFallback>
                         </Avatar>
                     ) : <Icons.avatar width={40} height={40} className="cursor-pointer" />}
                 </DropdownMenuTrigger>
