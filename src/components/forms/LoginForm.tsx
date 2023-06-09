@@ -15,12 +15,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { Icons } from "../icons"
-import { useDispatch } from "react-redux"
-import { login } from "@/redux/features/user/user-slice"
+import { useSignIn } from "@clerk/nextjs"
 
 
 const formSchema = z.object({
-    username: z.string().min(4).max(50),
+    identifier: z.string().min(4).max(50),
     password: z.string().min(8).max(16),
 })
 
@@ -28,21 +27,34 @@ export function LoginForm() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const dispatch = useDispatch();
-
+    const [error, setError] = useState("");
+    const { isLoaded, signIn, setActive } = useSignIn()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
+            identifier: "",
             password: ""
         },
     })
+    if (!isLoaded) return null;
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-        dispatch(login(values.username));
-        handleSubmit()
+    const onSubmit = ({ password, identifier }: z.infer<typeof formSchema>) => {
+        setIsLoading(true)
+        signIn.create({
+            identifier,
+            password
+        }).then((result) => {
+            if (result.status === 'complete') {
+                setActive({ session: result.createdSessionId })
+            }
+        }).catch((err) => {
+            console.log()
+            setError(err.errors[0].longMessage);
+        })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }
 
     function handleSubmit() {
@@ -61,11 +73,11 @@ export function LoginForm() {
 
                         <FormField
                             control={form.control}
-                            name="username"
+                            name="identifier"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                        <Input placeholder="Username" {...field} disabled={isLoading} />
+                                        <Input placeholder="Username/Email" {...field} disabled={isLoading} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -109,6 +121,7 @@ export function LoginForm() {
                             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                         ) : ("Login")}
                     </Button>
+                    {error && <p className="text-sm text-destructive">{error}</p>}
                 </form>
             </Form>
             <div className="relative">

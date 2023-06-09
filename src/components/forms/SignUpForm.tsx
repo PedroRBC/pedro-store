@@ -1,5 +1,7 @@
 "use client"
 
+const SSO_URL = process.env.NEXT_PUBLIC_CLERK_CALLBACK_SING_UP_URL as string
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useForm } from 'react-hook-form'
@@ -15,6 +17,7 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { Icons } from "../icons"
 import { useRouter } from 'next/navigation';
+import { useSignUp } from "@clerk/nextjs"
 
 const formSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
@@ -25,8 +28,9 @@ const formSchema = z.object({
 export function SingUpForm() {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [error, setError] = useState("");
     const Router = useRouter()
-
+    const { isLoaded, signUp, setActive } = useSignUp()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -35,10 +39,28 @@ export function SingUpForm() {
             password: ""
         },
     })
+    if (!isLoaded) return null;
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-        handleSubmit()
+    const onSubmit = ({ email: emailAddress, password, username }: z.infer<typeof formSchema>) => {
+        setIsLoading(true);
+        signUp.create({
+            emailAddress,
+            password,
+            username
+        }).then((result) => {
+            if (result.status === 'complete') {
+                setActive({ session: result.createdSessionId })
+            } else {
+
+            }
+        }).catch((err) => {
+            console.log()
+            setError(err.errors[0].longMessage);
+        })
+            .finally(() => {
+                setIsLoading(false)
+            })
+
     }
 
     function handleSubmit() {
@@ -49,7 +71,7 @@ export function SingUpForm() {
             Router.push("/")
         }, 2000)
     }
-
+    signUp
     return (
         <>
             <Form {...form}>
@@ -113,6 +135,7 @@ export function SingUpForm() {
                         />
                     </div>
                     <Button type="submit" disabled={isLoading} >Continue</Button>
+                    {error && <p className="text-sm text-destructive">{error}</p>}
                 </form>
             </Form>
             <div className="relative">
@@ -125,7 +148,13 @@ export function SingUpForm() {
                     </span>
                 </div>
             </div>
-            <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading}>
+            <Button variant="outline" type="button" onClick={() => {
+                signUp.authenticateWithRedirect({
+                    strategy: "oauth_github",
+                    redirectUrl: SSO_URL,
+                    redirectUrlComplete: "/LICENSE"
+                })
+            }} disabled={isLoading}>
                 {isLoading ? (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : (

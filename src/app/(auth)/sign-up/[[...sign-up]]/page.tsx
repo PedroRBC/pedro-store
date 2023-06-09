@@ -1,8 +1,10 @@
 import Link from "next/link";
 
-import Auth from "../../../../public/auth.json"
+import Auth from "../../../../../public/auth.json"
 import { Lottie } from "@/components/Lottie";
 import { SingUpForm } from "@/components/forms/SignUpForm";
+import { SignUp } from "@clerk/nextjs";
+
 
 export const metadata = {
     title: 'Signup',
@@ -13,7 +15,7 @@ export default function Signup() {
     return (
         <div className="container relative flex min-h-screen max-w-none flex-col justify-center md:grid md:min-h-0 md:grid-cols-2">
             <Link
-                href="/login"
+                href="/sign-in"
                 className="absolute right-8 top-8 text-xl"
             >
                 Login
@@ -24,7 +26,7 @@ export default function Signup() {
             </div>
 
             <div className="flex p-8" >
-                <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]" >
+                <div className="mx-auto flex w-full flex-col items-center justify-center space-y-6 sm:w-[350px]" >
                     <div className="flex flex-col space-y-2 text-center">
                         <h1 className="text-2xl font-semibold tracking-tight">
                             Create an account
@@ -33,7 +35,7 @@ export default function Signup() {
                             Enter your email and password below to create your account
                         </p>
                     </div>
-                    <SingUpForm />
+                    <SignUp signInUrl="/sign-in" />
                     <p className="px-8 text-center text-sm text-muted-foreground">
                         By clicking continue, you agree to our{" "}
                         <Link
