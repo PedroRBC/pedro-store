@@ -10,16 +10,18 @@ import {
     FormControl,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { Icons } from "../icons"
 
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
+import { ContinueWith } from "./ContinueWith";
 
 const formSchema = z.object({
-    identifier: z.string().min(4).max(50),
+    email: z.string().email(),
     password: z.string().min(8).max(16),
 })
 
@@ -29,17 +31,31 @@ export function LoginForm() {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [error, setError] = useState("");
 
+    function newError(message: string) {
+        setError(message)
+        setTimeout(() => {
+            setError("")
+        }, 5000)
+    }
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            identifier: "",
+            email: "",
             password: ""
         },
     })
 
-    const onSubmit = ({ password, identifier }: z.infer<typeof formSchema>) => {
-        handleSubmit()
-
+    const onSubmit = ({ password, email }: z.infer<typeof formSchema>) => {
+        setIsLoading(true);
+        signIn("credentials", {
+            email,
+            password,
+            redirect: false,
+            callbackUrl: '/'
+        }).then(res => {
+            if (res?.error) newError(res.error)
+        }).finally(() => setIsLoading(false))
     }
 
     function handleSubmit() {
@@ -53,16 +69,17 @@ export function LoginForm() {
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" >
+                <form onSubmit={form.handleSubmit(onSubmit)} className="grid items-center gap-4" >
                     <div className="grid gap-2" >
 
                         <FormField
                             control={form.control}
-                            name="identifier"
+                            name="email"
                             render={({ field }) => (
                                 <FormItem>
+                                    <FormLabel className="text-primary">Email</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Username/Email" {...field} disabled={isLoading} />
+                                        <Input {...field} disabled={isLoading} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -73,10 +90,10 @@ export function LoginForm() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
+                                    <FormLabel className="text-primary">Password</FormLabel>
                                     <FormControl >
-                                        <div className="relative" >
+                                        <div className="relative">
                                             <Input
-                                                placeholder="Password"
                                                 {...field}
                                                 disabled={isLoading}
                                                 className="block pr-11"
@@ -106,7 +123,7 @@ export function LoginForm() {
                             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                         ) : ("Login")}
                     </Button>
-                    {error && <p className="text-sm text-destructive">{error}</p>}
+                    {error && <p className="text-center text-base text-destructive">{error}</p>}
                 </form>
             </Form>
             <div className="relative">
@@ -120,23 +137,7 @@ export function LoginForm() {
                 </div>
             </div>
 
-            <div className="flex flex-row items-center justify-center space-x-2" >
-                <Button variant="outline" type="button" onClick={() => {
-                    signIn("github", {
-                        callbackUrl: '/'
-                    })
-                }} disabled={isLoading} >
-                    <Icons.gitHub className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" type="button" onClick={() => signIn("google", {
-                    callbackUrl: '/'
-                })} disabled={isLoading} >
-                    <Icons.google className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" type="button" onClick={handleSubmit} disabled={isLoading} >
-                    <Icons.facebook className="h-4 w-4" />
-                </Button>
-            </div>
+            <ContinueWith isLoading={isLoading} handleLoading={() => setIsLoading(true)} />
         </>
     )
 }
