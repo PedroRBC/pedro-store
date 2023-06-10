@@ -4,7 +4,7 @@ import { Button } from "../ui/button"
 
 
 
-export function ContinueWith({ isLoading, handleLoading }: { isLoading: boolean, handleLoading: () => void }) {
+export function ContinueWith({ isLoading, handleLoading, callbackUrl }: { isLoading: boolean, handleLoading: () => void, callbackUrl: string }) {
     return (<>
         <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -20,7 +20,7 @@ export function ContinueWith({ isLoading, handleLoading }: { isLoading: boolean,
             <Button variant="outline" type="button" onClick={() => {
                 handleLoading();
                 signIn("github", {
-                    callbackUrl: '/',
+                    callbackUrl
                 })
             }} disabled={isLoading} >
                 <Icons.gitHub className="h-4 w-4" />
@@ -28,7 +28,7 @@ export function ContinueWith({ isLoading, handleLoading }: { isLoading: boolean,
             <Button variant="outline" type="button" onClick={() => {
                 handleLoading();
                 signIn("google", {
-                    callbackUrl: '/'
+                    callbackUrl
                 })
             }} disabled={isLoading} >
                 <Icons.google className="h-4 w-4" />
