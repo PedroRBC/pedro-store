@@ -5,7 +5,17 @@ import { Button } from "../ui/button"
 
 
 export function ContinueWith({ isLoading, handleLoading }: { isLoading: boolean, handleLoading: () => void }) {
-    return (
+    return (<>
+        <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                    Or continue with
+                </span>
+            </div>
+        </div>
         <div className="flex flex-row items-center justify-center space-x-2" >
             <Button variant="outline" type="button" onClick={() => {
                 handleLoading();
@@ -27,5 +37,5 @@ export function ContinueWith({ isLoading, handleLoading }: { isLoading: boolean,
                 <Icons.facebook className="h-4 w-4" />
             </Button>
         </div>
-    )
+    </>)
 }

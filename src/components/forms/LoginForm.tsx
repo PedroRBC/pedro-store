@@ -19,6 +19,7 @@ import { Icons } from "../icons"
 
 import { signIn } from 'next-auth/react'
 import { ContinueWith } from "./ContinueWith";
+import Link from "next/link";
 
 const formSchema = z.object({
     email: z.string().email(),
@@ -58,19 +59,11 @@ export function LoginForm() {
         }).finally(() => setIsLoading(false))
     }
 
-    function handleSubmit() {
-        setIsLoading(true)
-        setTimeout(() => {
-            setIsLoading(false);
-            router.push("/")
-        }, 2000)
-    }
-
     return (
         <>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="grid items-center gap-4" >
-                    <div className="grid gap-2" >
+                <form onSubmit={form.handleSubmit(onSubmit)} className="grid items-center gap-2" >
+                    <div className="mb-2 grid gap-2" >
 
                         <FormField
                             control={form.control}
@@ -118,25 +111,18 @@ export function LoginForm() {
                             )}
                         />
                     </div>
-                    <Button type="submit" disabled={isLoading} >
+                    <Button type="submit" disabled={isLoading}>
                         {isLoading ? (
                             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                         ) : ("Login")}
                     </Button>
                     {error && <p className="text-center text-base text-destructive">{error}</p>}
+                    <p className="text-sm" >
+                        Don&apos;t have an account?{" "}
+                        <Link href="/register" className="underline" > Register </Link>
+                    </p>
                 </form>
             </Form>
-            <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                        Or continue with
-                    </span>
-                </div>
-            </div>
-
             <ContinueWith isLoading={isLoading} handleLoading={() => setIsLoading(true)} />
         </>
     )
