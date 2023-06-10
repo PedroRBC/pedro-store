@@ -1,9 +1,19 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { useForm } from 'react-hook-form';
+import { useState } from "react"
+import { useRouter, useSearchParams } from 'next/navigation';
+import axios, { type AxiosError } from "axios";
+
+import Link from "next/link";
+import { Icons } from "../icons"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ContinueWith } from "./ContinueWith";
+
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+import { useForm } from 'react-hook-form';
 import {
     Form,
     FormControl,
@@ -12,28 +22,21 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useState } from "react"
-import { Icons } from "../icons"
-
-import { signIn } from 'next-auth/react'
-import { ContinueWith } from "./ContinueWith";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
 
 const formSchema = z.object({
     email: z.string().email(),
     password: z.string().min(8).max(16),
+    name: z.string().min(3).max(32),
 })
 
-export function LoginForm() {
+export function RegisterForm() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [error, setError] = useState("");
-    const searchParams = useSearchParams();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl")
-    const email = searchParams.get("email") || "";
+
     function newError(message: string) {
         setError(message)
         setTimeout(() => {
@@ -44,24 +47,23 @@ export function LoginForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email,
-            password: ""
+            email: "",
+            password: "",
+            name: ""
         },
     })
 
-    const onSubmit = ({ password, email }: z.infer<typeof formSchema>) => {
+    const onSubmit = ({ password, email, name }: z.infer<typeof formSchema>) => {
         setIsLoading(true);
-        signIn("credentials", {
+        axios.post("/api/auth/register", {
+            name,
             email,
-            password,
-            redirect: false
-        }).then(res => {
-            if (res?.error) {
-                setIsLoading(false)
-                newError(res.error)
-            }
-            else router.push(callbackUrl || '/')
-        })
+            password
+        }).then(_ => router.push(callbackUrl ? `/login?callbackUrl=${callbackUrl}&email=${email}` : `/login?email=${email}`))
+            .catch((err: AxiosError) => {
+                if (err.response) newError(err.response.data as string)
+                setIsLoading(false);
+            })
     }
 
     return (
@@ -70,7 +72,21 @@ export function LoginForm() {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="grid items-center gap-2" >
                     <div className="mb-2 grid gap-2" >
 
-                        <FormField
+                        <FormField // FullName
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-primary">Name</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} disabled={isLoading} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField // Email
                             control={form.control}
                             name="email"
                             render={({ field }) => (
@@ -83,7 +99,8 @@ export function LoginForm() {
                                 </FormItem>
                             )}
                         />
-                        <FormField
+
+                        <FormField // Password
                             control={form.control}
                             name="password"
                             render={({ field }) => (
@@ -115,16 +132,19 @@ export function LoginForm() {
                                 </FormItem>
                             )}
                         />
+
+
                     </div>
                     <Button type="submit" disabled={isLoading}>
                         {isLoading ? (
                             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                        ) : ("Login")}
+                        ) : "Register"
+                        }
                     </Button>
                     {error && <p className="text-center text-base text-destructive">{error}</p>}
                     <p className="text-sm" >
-                        Don&apos;t have an account?{" "}
-                        <Link href={callbackUrl ? `/register?callbackUrl=${callbackUrl}` : '/register'} className="underline" > Register </Link>
+                        Have an account?{" "}
+                        <Link href={callbackUrl ? `/login?callbackUrl=${callbackUrl}` : "/login"} className="underline" > Login </Link>
                     </p>
                 </form>
             </Form>

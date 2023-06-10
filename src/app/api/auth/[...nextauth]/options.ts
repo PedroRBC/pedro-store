@@ -40,12 +40,15 @@ export const authOptions: NextAuthOptions = {
                 const passwordMatch = await bcrypt.compare(password, user.hashedPassword);
                 if (!passwordMatch) throw new Error('Incorrect password');
                 return user;
-            }            
+            },      
         })
     ],
     pages: {
         signIn: '/login',
         newUser: '/',
+    },
+    session: {
+        strategy: 'jwt',
     },
     secret: process.env.NEXTAUTH_SECRET!
 }
