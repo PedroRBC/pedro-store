@@ -1,3 +1,4 @@
+import { FetchContext } from "./FetchContext";
 import { ReduxProvider } from "./ReduxProvider";
 import { SessionProvider } from "./SessionProvider"
 import { ThemeProvider } from "./ThemeProvider"
@@ -11,7 +12,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem >
             <ReduxProvider store={store}>
                 <SessionProvider>
-                    {children}
+                    <FetchContext>
+                        {children}
+                    </FetchContext>
                 </SessionProvider>
             </ReduxProvider>
         </ThemeProvider>
