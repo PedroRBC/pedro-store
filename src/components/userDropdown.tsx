@@ -49,7 +49,14 @@ export function UserDropdown() {
                     <ThemeToggle />
                     {
                         session && (
-                            <>
+                            <>  <DropdownMenuSeparator />
+                                <Link href='/settings'>
+                                    <DropdownMenuItem>
+                                        <Icons.cog className="ml-2 h-5 w-5" />
+                                        <span>Settings</span>
+
+                                    </DropdownMenuItem>
+                                </Link>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => signOut()}>
                                     <Icons.logOut className="ml-2 h-4 w-4" />
