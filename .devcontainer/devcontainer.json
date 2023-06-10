@@ -24,7 +24,9 @@
 			"extensions": [
 				"bradlc.vscode-tailwindcss",
 				"yoavbls.pretty-ts-errors",
-				"dbaeumer.vscode-eslint"
+				"dbaeumer.vscode-eslint",
+				"prisma.prisma",
+				"naumovs.color-highlight"
 			]
 		}
 	}
