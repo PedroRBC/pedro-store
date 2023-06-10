@@ -1,6 +1,6 @@
 
 import { Lottie } from "@/components/Lottie";
-import Auth from "../../../../../public/auth.json"
+import Auth from "../../../../public/auth.json"
 import { LoginForm } from "@/components/forms/LoginForm";
 
 export const metadata = {

@@ -25,8 +25,8 @@ export function UserDropdown() {
 
             {!session && (
                 <Button variant="outline" asChild className="mr-3">
-                    <Link href="/signin" >
-                        <span>Signin</span>
+                    <Link href="/login" >
+                        <span>Login</span>
                         <Icons.logIn className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
