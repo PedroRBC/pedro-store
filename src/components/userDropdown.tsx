@@ -32,9 +32,9 @@ export function UserDropdown() {
                 </Button>
             )}
 
-            <DropdownMenu  >
+            <DropdownMenu dir="rtl" >
                 <DropdownMenuTrigger asChild>
-                    {session ? (
+                    {session?.user?.image ? (
                         <Avatar className='cursor-pointer'>
                             <AvatarImage src={session.user?.image!} />
                             <AvatarFallback>{session.user?.name!}</AvatarFallback>
@@ -52,7 +52,7 @@ export function UserDropdown() {
                             <>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => signOut()}>
-                                    <Icons.logOut className="mr-2 h-4 w-4" />
+                                    <Icons.logOut className="ml-2 h-4 w-4" />
                                     <span>Logout</span>
                                 </DropdownMenuItem>
                             </>
