@@ -30,11 +30,12 @@ const formSchema = z.object({
 })
 
 export function RegisterForm() {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [error, setError] = useState("");
     const router = useRouter();
     const searchParams = useSearchParams();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const defaultError = searchParams.get("error") === "OAuthAccountNotLinked" ? "This email is already in use by another account." : "";
+    const [error, setError] = useState(defaultError);
     const callbackUrl = searchParams.get("callbackUrl")
 
     function newError(message: string) {
