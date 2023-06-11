@@ -5,11 +5,22 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useSession } from "next-auth/react"
 import { useEffect } from "react";
-import { setProviders } from "@/redux/features/auth/auth-slice";
+import { setProviders, logout, setName } from "@/redux/features/auth/auth-slice";
+import { useAppSelector } from "@/redux/selector";
 
 export function FetchContext({ children }: { children: React.ReactNode }) {
-    const { status } = useSession();
+    const { data: session, status } = useSession();
+    const name = useAppSelector(state => state.auth.name);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (status === "authenticated" && name === "" && session?.user) {
+            dispatch(setName(session.user.name!))
+        }
+        if (status === "unauthenticated" && name !== "") {
+            dispatch(logout())
+        }
+    }, [status, dispatch, name, session])
 
     useEffect(() => {
         if (status === "authenticated") {

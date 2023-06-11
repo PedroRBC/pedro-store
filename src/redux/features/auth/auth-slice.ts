@@ -8,11 +8,13 @@ interface loggedProviders {
 }
 
 interface authState {
-    loggedProviders: loggedProviders[]
+    loggedProviders: loggedProviders[],
+    name: string,
 }
 
 const initialState: authState = {
-    loggedProviders: []
+    loggedProviders: [],
+    name: localStorage.getItem('name') || "",
 };
 
 export const providersSlice = createSlice({
@@ -24,10 +26,19 @@ export const providersSlice = createSlice({
         },
         removeProvider: (state, { payload }: PayloadAction<string>) => {
             state.loggedProviders = state.loggedProviders.filter(provider => provider.id !== payload)
+        },
+        logout: (state) => {
+            state.loggedProviders = []
+            state.name = ""
+            localStorage.removeItem('name')
+        },
+        setName: (state, { payload }: PayloadAction<string>) => {
+            state.name = payload
+            localStorage.setItem('name', payload)
         }
     },
 });
 
-export const { setProviders, removeProvider } = providersSlice.actions;
+export const { setProviders, removeProvider, logout, setName } = providersSlice.actions;
 
 export const authReducer = providersSlice.reducer;

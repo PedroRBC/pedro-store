@@ -17,11 +17,19 @@ import { ThemeToggle } from "./theme-toggle";
 import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { SkeletonUserAvatar } from "./skeletons/userAvatar";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/features/auth/auth-slice";
 
 export function UserDropdown() {
     const { data: session, status } = useSession()
+    const dispatch = useDispatch()
 
     if (status === 'loading') return <SkeletonUserAvatar />
+
+    function handleLogout() {
+        dispatch(logout())
+        signOut()
+    }
 
     return (
         <>
@@ -61,7 +69,7 @@ export function UserDropdown() {
                                     </DropdownMenuItem>
                                 </Link>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => signOut()}>
+                                <DropdownMenuItem onClick={() => handleLogout()}>
                                     <Icons.logOut className="ml-2 h-4 w-4" />
                                     <span>Logout</span>
                                 </DropdownMenuItem>
