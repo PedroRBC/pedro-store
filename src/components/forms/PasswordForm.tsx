@@ -68,11 +68,12 @@ export function FormPassword() {
             .then(_ => {
                 dispatch(setHasPassword(true))
                 setText("Password updated.")
+                setIsLoading(false);
                 update()
             }).catch(err => {
                 setError(err.response.data)
+                setIsLoading(false);
             })
-        setIsLoading(false);
     }
 
     return (
