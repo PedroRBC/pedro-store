@@ -19,6 +19,7 @@ import { useSession } from "next-auth/react"
 import { useDispatch } from "react-redux"
 import { useAppSelector } from "@/redux/selector"
 import { setName } from "@/redux/features/auth/auth-slice"
+import { ProfileFormSkeleton } from "../skeletons/ProfileForm"
 
 const profileFormSchema = z.object({
     name: z
@@ -36,7 +37,8 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>
 export function ProfileForm() {
     const { status } = useSession();
     const name = useAppSelector(state => state.auth.name);
-    if (status === "loading" && name === "") return <p> Carregando... </p>;
+    if (status === "loading") return <ProfileFormSkeleton />;
+    if (name === "") return <ProfileFormSkeleton />;
     return <FormProfile />
 }
 
