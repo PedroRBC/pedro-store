@@ -16,9 +16,12 @@ import {
 import { ThemeToggle } from "./theme-toggle";
 import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { SkeletonUserAvatar } from "./skeletons/userAvatar";
 
 export function UserDropdown() {
-    const { data: session } = useSession()
+    const { data: session, status } = useSession()
+
+    if (status === 'loading') return <SkeletonUserAvatar />
 
     return (
         <>
