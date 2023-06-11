@@ -19,12 +19,14 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { SkeletonUserAvatar } from "./skeletons/userAvatar";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/features/auth/auth-slice";
+import { useAppSelector } from "@/redux/selector";
 
 export function UserDropdown() {
-    const { data: session, status } = useSession()
+    const { data: session } = useSession()
+    const { loading, name } = useAppSelector(state => state.auth);
     const dispatch = useDispatch()
 
-    if (status === 'loading') return <SkeletonUserAvatar />
+    if (loading) return <SkeletonUserAvatar />
 
     function handleLogout() {
         dispatch(logout())
@@ -54,7 +56,7 @@ export function UserDropdown() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" >
                     <DropdownMenuLabel className="justify-center" >
-                        {session ? `${session.user?.name}` : "Guest"}
+                        {session ? name : "Guest"}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <ThemeToggle />

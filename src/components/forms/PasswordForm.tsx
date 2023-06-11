@@ -36,8 +36,9 @@ const passwordFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof passwordFormSchema>
 
 export function PasswordForm() {
-    const { status } = useSession();
-    if (status === "loading") return <PasswordFormSkeleton />;
+    const loading = useAppSelector(state => state.auth.loading);
+
+    if (loading) return <PasswordFormSkeleton />;
     return <FormPassword />
 }
 
