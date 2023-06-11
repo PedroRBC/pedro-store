@@ -7,28 +7,39 @@ interface loggedProviders {
     provider: string
 }
 
+interface data {
+    connections: loggedProviders[],
+    hasPassword: boolean
+}
+
 interface authState {
-    loggedProviders: loggedProviders[],
+    connections: loggedProviders[],
     name: string,
+    hasPassword: boolean
 }
 
 const initialState: authState = {
-    loggedProviders: [],
+    connections: [],
     name: localStorage.getItem('name') || "",
+    hasPassword: false
 };
 
 export const providersSlice = createSlice({
     name: "providers",
     initialState,
     reducers: {
-        setProviders: (state, { payload }: PayloadAction<loggedProviders[]>) => {
-            state.loggedProviders = payload
+        setData: (state, { payload }: PayloadAction<data>) => {
+            state.connections = payload.connections
+            state.hasPassword = payload.hasPassword
+        },
+        setHasPassword: (state, { payload }: PayloadAction<boolean>) => {
+            state.hasPassword = payload
         },
         removeProvider: (state, { payload }: PayloadAction<string>) => {
-            state.loggedProviders = state.loggedProviders.filter(provider => provider.id !== payload)
+            state.connections = state.connections.filter(provider => provider.id !== payload)
         },
         logout: (state) => {
-            state.loggedProviders = []
+            state.connections = []
             state.name = ""
             localStorage.removeItem('name')
         },
@@ -39,6 +50,6 @@ export const providersSlice = createSlice({
     },
 });
 
-export const { setProviders, removeProvider, logout, setName } = providersSlice.actions;
+export const { setData, removeProvider, logout, setName } = providersSlice.actions;
 
 export const authReducer = providersSlice.reducer;

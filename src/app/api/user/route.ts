@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
 
     try {
-        const providers = await prisma.account.findMany({
+        const connections = await prisma.account.findMany({
             where: {
                 user: {
                     email: session.user.email
@@ -19,9 +19,20 @@ export async function GET(req: NextRequest, res: NextResponse) {
             select: {
                 id: true,
                 provider: true,
+                user: {
+                    select: {
+                        hashedPassword: true
+                    }
+                }
             }
         })
-        return NextResponse.json(providers, { status: 200 })
+
+        const response = {
+            connections: connections.map(con => { return { id: con.id, provider: con.provider } }),
+            hasPassword: !!connections[0].user.hashedPassword
+        }
+
+        return NextResponse.json(response, { status: 200 })
     } catch (e) {
         console.error('API:', e)
         return new NextResponse('Internal Error', { status: 500 })
