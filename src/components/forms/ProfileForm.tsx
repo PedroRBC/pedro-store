@@ -17,7 +17,6 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { useSession } from "next-auth/react"
 import { useDispatch } from "react-redux"
 import { useAppSelector } from "@/redux/selector"
 import { setName } from "@/redux/features/auth/auth-slice"
@@ -39,10 +38,8 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 export function ProfileForm() {
-    const { status } = useSession();
-    const name = useAppSelector(state => state.auth.name);
-    if (status === "loading") return <ProfileFormSkeleton />;
-    if (name === "") return <ProfileFormSkeleton />;
+    const loading = useAppSelector(state => state.auth.loading);
+    if (loading) return <ProfileFormSkeleton />;
     return <FormProfile />
 }
 

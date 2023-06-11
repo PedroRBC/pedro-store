@@ -15,13 +15,15 @@ interface data {
 interface authState {
     connections: loggedProviders[],
     name: string,
-    hasPassword: boolean
+    hasPassword: boolean,
+    loading: boolean
 }
 
 const initialState: authState = {
     connections: [],
     name: typeof window !== "undefined" ? (window.localStorage.getItem('name') || "") : "",
-    hasPassword: false
+    hasPassword: false,
+    loading: true
 };
 
 export const providersSlice = createSlice({
@@ -31,6 +33,9 @@ export const providersSlice = createSlice({
         setData: (state, { payload }: PayloadAction<data>) => {
             state.connections = payload.connections
             state.hasPassword = payload.hasPassword
+        },
+        setLoaded: (state) => {
+            state.loading = false
         },
         setHasPassword: (state, { payload }: PayloadAction<boolean>) => {
             state.hasPassword = payload
@@ -50,6 +55,6 @@ export const providersSlice = createSlice({
     },
 });
 
-export const { setData, removeProvider, logout, setName, setHasPassword } = providersSlice.actions;
+export const { setData, removeProvider, logout, setName, setHasPassword, setLoaded } = providersSlice.actions;
 
 export const authReducer = providersSlice.reducer;

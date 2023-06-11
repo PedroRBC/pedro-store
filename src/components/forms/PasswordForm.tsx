@@ -36,8 +36,9 @@ const passwordFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof passwordFormSchema>
 
 export function PasswordForm() {
-    const { status } = useSession();
-    if (status === "loading") return <PasswordFormSkeleton />;
+    const loading = useAppSelector(state => state.auth.loading);
+
+    if (loading) return <PasswordFormSkeleton />;
     return <FormPassword />
 }
 
@@ -49,6 +50,7 @@ export function FormPassword() {
     const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
     const [showConPassword, setShowConPassword] = useState<boolean>(false);
     const [text, setText] = useState<string>("");
+    const [error, setError] = useState<string>("");
     const hasPassword = useAppSelector(state => state.auth.hasPassword);
     const defaultValues: ProfileFormValues = {
         oldPassword: hasPassword ? "" : "@undefined@",
@@ -67,9 +69,12 @@ export function FormPassword() {
             .then(_ => {
                 dispatch(setHasPassword(true))
                 setText("Password updated.")
+                setIsLoading(false);
                 update()
+            }).catch(err => {
+                setError(err.response.data)
+                setIsLoading(false);
             })
-        setIsLoading(false);
     }
 
     return (
@@ -181,9 +186,10 @@ export function FormPassword() {
                     <Button disabled={isLoading} type="submit">
                         {isLoading ? (
                             <Icons.spinner className="mx-8 h-4 w-4 animate-spin" />
-                        ) : ("Update profile")}
+                        ) : ("Update password")}
                     </Button>
-                    <p className="text-sm text-primary">{text}</p>
+                    {text && <p className="text-sm text-primary">{text}</p>}
+                    {error && <p className="text-sm text-destructive">{error}</p>}
                 </div>
 
             </form>

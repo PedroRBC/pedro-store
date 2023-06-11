@@ -5,7 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useSession } from "next-auth/react"
 import { useEffect } from "react";
-import { setData, logout, setName } from "@/redux/features/auth/auth-slice";
+import { setData, logout, setName, setLoaded } from "@/redux/features/auth/auth-slice";
 import { useAppSelector } from "@/redux/selector";
 
 export function FetchContext({ children }: { children: React.ReactNode }) {
@@ -27,6 +27,7 @@ export function FetchContext({ children }: { children: React.ReactNode }) {
             const Fetch = async () => {
                 const { data } = await axios.get("/api/user");
                 dispatch(setData(data));
+                dispatch(setLoaded());
             }
             Fetch()
         }

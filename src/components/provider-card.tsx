@@ -19,13 +19,11 @@ import { Icons } from "./icons";
 import { SkeletonConnectionCard } from "./skeletons/connection-card";
 
 export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
-    const { status } = useSession()
+    const isLoading = useAppSelector(state => state.auth.loading);
     const Connections = useAppSelector(state => state.auth.connections)
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false)
-    if (status === "loading") {
-        return <SkeletonConnectionCard />
-    }
+    if (isLoading) return <SkeletonConnectionCard />
     function handleConnect() {
         setLoading(true)
         signIn(provider.id, {
