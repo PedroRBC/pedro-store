@@ -1,6 +1,6 @@
 
 import { Lottie } from "@/components/Lottie";
-import Auth from "../../../../../public/auth.json"
+import Auth from "../../../../public/auth.json"
 import { LoginForm } from "@/components/forms/LoginForm";
 
 export const metadata = {
@@ -17,7 +17,7 @@ export default function Login() {
             </div>
 
             <div className="flex p-8" >
-                <div className="mx-auto flex w-full flex-col items-center justify-center space-y-6 sm:w-[350px]" >
+                <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[350px]" >
                     <LoginForm />
                 </div>
             </div>
