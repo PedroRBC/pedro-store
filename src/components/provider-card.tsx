@@ -1,5 +1,5 @@
 'use client';
-import { ClientSafeProvider, signIn } from "next-auth/react";
+import { ClientSafeProvider, signIn, useSession } from "next-auth/react";
 
 import {
     Card,
@@ -14,17 +14,30 @@ import axios from "axios";
 
 import { useDispatch } from "react-redux";
 import { removeProvider } from "@/redux/features/providers/providers-slice";
+import { useState } from "react";
+import { Icons } from "./icons";
+import { SkeletonProviderCard } from "./skeletons/provider-card";
 
 export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
+    const { status } = useSession()
     const Providers = useAppSelector(state => state.providers.loggedProviders)
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false)
+    if (status === "loading") {
+        return <SkeletonProviderCard />
+    }
     function handleConnect() {
-        signIn(provider.id)
+        setLoading(true)
+        signIn(provider.id, {
+            callbackUrl: "/settings/connections",
+        })
     }
     function handleDisconnect(id: string) {
-        axios.delete(`/api/user/${id}`)
+        setLoading(true)
+        axios.delete(`/api/user/providers/${id}`)
             .then(res => {
-                dispatch(removeProvider(provider.id));
+                dispatch(removeProvider(id));
+                setLoading(false)
             })
     }
     const actualProvider = Providers.find(p => p.provider === provider.id)
@@ -44,20 +57,24 @@ export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
                         <Button
                             className="hover:bg-destructive"
                             onClick={() => handleDisconnect(actualProvider?.id)}
+                            disabled={loading}
                         >
-                            Disconnect
+                            {loading ? (
+                                <Icons.spinner className="mx-4 h-4 w-4 animate-spin" />
+                            ) : ("Disconnect")}
                         </Button>
                     ) : (
                         <Button
                             className="hover:bg-green-500"
-                            onClick={handleConnect}
-                        >
-                            Connect
+                                onClick={handleConnect} disabled={loading}
+                            >
+                                {loading ? (
+                                    <Icons.spinner className="mx-4 h-4 w-4 animate-spin" />
+                                ) : ("Connect")}
                         </Button>
                     )
                 }
             </CardContent>
-
         </Card>
     )
 }
