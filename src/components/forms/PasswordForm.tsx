@@ -49,6 +49,7 @@ export function FormPassword() {
     const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
     const [showConPassword, setShowConPassword] = useState<boolean>(false);
     const [text, setText] = useState<string>("");
+    const [error, setError] = useState<string>("");
     const hasPassword = useAppSelector(state => state.auth.hasPassword);
     const defaultValues: ProfileFormValues = {
         oldPassword: hasPassword ? "" : "@undefined@",
@@ -68,6 +69,8 @@ export function FormPassword() {
                 dispatch(setHasPassword(true))
                 setText("Password updated.")
                 update()
+            }).catch(err => {
+                setError(err.response.data)
             })
         setIsLoading(false);
     }
@@ -181,9 +184,10 @@ export function FormPassword() {
                     <Button disabled={isLoading} type="submit">
                         {isLoading ? (
                             <Icons.spinner className="mx-8 h-4 w-4 animate-spin" />
-                        ) : ("Update profile")}
+                        ) : ("Update password")}
                     </Button>
-                    <p className="text-sm text-primary">{text}</p>
+                    {text && <p className="text-sm text-primary">{text}</p>}
+                    {error && <p className="text-sm text-destructive">{error}</p>}
                 </div>
 
             </form>
