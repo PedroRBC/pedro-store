@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { removeProvider } from "@/redux/features/auth/auth-slice";
 import { useState } from "react";
 import { Icons } from "./icons";
-import { SkeletonProviderCard } from "./skeletons/provider-card";
+import { SkeletonConnectionCard } from "./skeletons/connection-card";
 
 export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
     const { status } = useSession()
@@ -24,7 +24,7 @@ export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false)
     if (status === "loading") {
-        return <SkeletonProviderCard />
+        return <SkeletonConnectionCard />
     }
     function handleConnect() {
         setLoading(true)

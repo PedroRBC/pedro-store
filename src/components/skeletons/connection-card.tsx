@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton"
 
-export function SkeletonProviderCard() {
+export function SkeletonConnectionCard() {
 
     return <Skeleton className="h-32 w-full" />
 }
