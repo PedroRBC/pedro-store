@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -20,6 +22,8 @@ import { useDispatch } from "react-redux"
 import { useAppSelector } from "@/redux/selector"
 import { setName } from "@/redux/features/auth/auth-slice"
 import { ProfileFormSkeleton } from "../skeletons/ProfileForm"
+import axios from "axios"
+import { Icons } from "../icons"
 
 const profileFormSchema = z.object({
     name: z
@@ -44,6 +48,8 @@ export function ProfileForm() {
 
 export function FormProfile() {
     const dispatch = useDispatch()
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [text, setText] = useState<string>("");
     const name = useAppSelector(state => state.auth.name);
     const defaultValues: ProfileFormValues = {
         name,
@@ -54,8 +60,16 @@ export function FormProfile() {
         mode: "onChange",
     })
 
-    function onSubmit(data: ProfileFormValues) {
-        dispatch(setName(data.name))
+    async function onSubmit(data: ProfileFormValues) {
+        setIsLoading(true)
+        axios.patch("/api/user", data)
+            .then(_ => {
+                dispatch(setName(data.name))
+                setText("Profile updated!")
+                setTimeout(() => {
+                    setText("")
+                }, 5000)
+            }).finally(() => setIsLoading(false))
     }
 
     return (
@@ -68,7 +82,7 @@ export function FormProfile() {
                         <FormItem>
                             <FormLabel>Name</FormLabel>
                             <FormControl>
-                                <Input {...field} />
+                                <Input disabled={isLoading} {...field} />
                             </FormControl>
                             <FormDescription>
                                 This is your public display name. It can be your real name or a
@@ -78,12 +92,16 @@ export function FormProfile() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Update profile</Button>
+                <div className="flex flex-row items-center space-x-4" >
+                    <Button disabled={isLoading} type="submit">
+                        {isLoading ? (
+                            <Icons.spinner className="mx-8 h-4 w-4 animate-spin" />
+                        ) : ("Update profile")}
+                    </Button>
+                    <p className="text-sm text-primary">{text}</p>
+                </div>
+
             </form>
         </Form>
     )
-}
-
-FormProfile.auth = {
-    loading: <p> Carregando... </p>,
 }
