@@ -1,4 +1,3 @@
-import { User } from "@/components/user";
 
 export default function Home() {
 
@@ -6,7 +5,6 @@ export default function Home() {
     <div className="container flex items-center justify-center" >
 
 
-      <User />
 
     </div>
   )

@@ -17,21 +17,21 @@ export function ThemeToggle() {
     return (
         <DropdownMenuSub >
             <DropdownMenuSubTrigger >
-                <Icons.sun className="mr-2 h-5 w-5 dark:hidden" />
-                <Icons.moon className="mr-2 hidden h-5 w-5 dark:block" />
+                <Icons.sun className="ml-2 h-5 w-5 dark:hidden" />
+                <Icons.moon className="ml-2 hidden h-5 w-5 dark:block" />
                 <span>Toggle Theme</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
                 <DropdownMenuItem onClick={() => setTheme("light")}>
-                    <Icons.sun className="mr-2 h-4 w-4" />
+                    <Icons.sun className="ml-2 h-4 w-4" />
                     <span>Light</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("dark")}>
-                    <Icons.moon className="mr-2 h-4 w-4" />
+                    <Icons.moon className="ml-2 h-4 w-4" />
                     <span>Dark</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("system")}>
-                    <Icons.laptop className="mr-2 h-4 w-4" />
+                    <Icons.laptop className="ml-2 h-4 w-4" />
                     <span>System</span>
                 </DropdownMenuItem>
             </DropdownMenuSubContent>

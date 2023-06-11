@@ -25,16 +25,16 @@ export function UserDropdown() {
 
             {!session && (
                 <Button variant="outline" asChild className="mr-3">
-                    <Link href="/signin" >
-                        <span>Signin</span>
+                    <Link href="/login" >
+                        <span>Login</span>
                         <Icons.logIn className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             )}
 
-            <DropdownMenu  >
+            <DropdownMenu dir="rtl" >
                 <DropdownMenuTrigger asChild>
-                    {session ? (
+                    {session?.user?.image ? (
                         <Avatar className='cursor-pointer'>
                             <AvatarImage src={session.user?.image!} />
                             <AvatarFallback>{session.user?.name!}</AvatarFallback>
@@ -49,10 +49,17 @@ export function UserDropdown() {
                     <ThemeToggle />
                     {
                         session && (
-                            <>
+                            <>  <DropdownMenuSeparator />
+                                <Link href='/settings'>
+                                    <DropdownMenuItem>
+                                        <Icons.cog className="ml-2 h-5 w-5" />
+                                        <span>Settings</span>
+
+                                    </DropdownMenuItem>
+                                </Link>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => signOut()}>
-                                    <Icons.logOut className="mr-2 h-4 w-4" />
+                                    <Icons.logOut className="ml-2 h-4 w-4" />
                                     <span>Logout</span>
                                 </DropdownMenuItem>
                             </>

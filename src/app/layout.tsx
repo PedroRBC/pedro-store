@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import { cn } from '@/lib/utils'
 import { Header } from '@/components/header'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
-import { Providers } from './providers'
+import { Providers } from '@/contexts'
 
 const inter = Inter({ subsets: ['latin'] })
 
