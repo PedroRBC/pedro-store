@@ -28,6 +28,6 @@ export const providersSlice = createSlice({
     },
 });
 
-export const { setProviders } = providersSlice.actions;
+export const { setProviders, removeProvider } = providersSlice.actions;
 
 export const providersReducer = providersSlice.reducer;
