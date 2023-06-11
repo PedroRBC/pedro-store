@@ -13,18 +13,18 @@ import { useAppSelector } from "@/redux/selector";
 import axios from "axios";
 
 import { useDispatch } from "react-redux";
-import { removeProvider } from "@/redux/features/providers/providers-slice";
+import { removeProvider } from "@/redux/features/auth/auth-slice";
 import { useState } from "react";
 import { Icons } from "./icons";
-import { SkeletonProviderCard } from "./skeletons/provider-card";
+import { SkeletonConnectionCard } from "./skeletons/connection-card";
 
 export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
     const { status } = useSession()
-    const Providers = useAppSelector(state => state.providers.loggedProviders)
+    const Connections = useAppSelector(state => state.auth.connections)
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false)
     if (status === "loading") {
-        return <SkeletonProviderCard />
+        return <SkeletonConnectionCard />
     }
     function handleConnect() {
         setLoading(true)
@@ -40,8 +40,8 @@ export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
                 setLoading(false)
             })
     }
-    const actualProvider = Providers.find(p => p.provider === provider.id)
-    const connected = actualProvider?.provider === provider.id
+    const actualConnection = Connections.find(c => c.provider === provider.id)
+    const connected = actualConnection?.provider === provider.id
 
     return (
         <Card key={provider.name}>
@@ -56,7 +56,7 @@ export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
                     connected ? (
                         <Button
                             className="text-xs hover:bg-destructive md:text-base"
-                            onClick={() => handleDisconnect(actualProvider?.id)}
+                            onClick={() => handleDisconnect(actualConnection?.id)}
                             disabled={loading}
                         >
                             {loading ? (

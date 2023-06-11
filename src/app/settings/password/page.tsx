@@ -1,17 +1,15 @@
-import { ProfileForm } from "@/components/forms/ProfileForm"
 import { Separator } from "@/components/ui/separator"
 
-export default function SettingsProfilePage() {
+export default function SettingsConnectionsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h3 className="text-lg font-medium">Profile</h3>
+                <h3 className="text-lg font-medium">Password</h3>
                 <p className="text-sm text-muted-foreground">
-                    This is how others will see you on the site.
+                    Update your security information.
                 </p>
             </div>
             <Separator />
-            <ProfileForm />
         </div>
     )
 }
