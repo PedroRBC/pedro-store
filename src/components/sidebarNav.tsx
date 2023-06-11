@@ -6,11 +6,16 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
+import { Icons } from "@/components/icons"
+
+export interface items {
+    href: string
+    title: string,
+    icon: keyof typeof Icons
+}
+
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
-    items: {
-        href: string
-        title: string
-    }[]
+    items: items[]
 }
 
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
@@ -24,21 +29,26 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
             )}
             {...props}
         >
-            {items.map((item) => (
-                <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                        buttonVariants({ variant: "ghost" }),
-                        pathname === item.href
-                            ? "bg-muted hover:bg-muted"
-                            : "hover:bg-transparent hover:underline",
-                        "justify-start"
-                    )}
-                >
-                    {item.title}
-                </Link>
-            ))}
+            {items.map((item) => {
+                const Icon = Icons[item.icon]
+                return (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                            buttonVariants({ variant: "ghost" }),
+                            pathname === item.href
+                                ? "bg-muted hover:bg-muted"
+                                : "hover:bg-transparent hover:underline",
+                            "justify-start"
+                        )}
+                    >
+                        <Icon className="mr-2 h-5 w-5" />
+                        {item.title}
+                    </Link>
+                )
+            }
+            )}
         </nav>
     )
 }

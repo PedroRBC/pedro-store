@@ -1,4 +1,4 @@
-import { SidebarNav } from "@/components/sidebarNav";
+import { SidebarNav, items } from "@/components/sidebarNav";
 import { Separator } from "@/components/ui/separator";
 import { Metadata } from "next";
 
@@ -6,14 +6,21 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/app/api/auth/[...nextauth]/options'
 
-const sidebarNavItems = [
+const sidebarNavItems: items[] = [
     {
         title: "Profile",
         href: "/settings",
+        icon: "avatar"
+    },
+    {
+        title: "Password",
+        href: "/settings/password",
+        icon: "lock"
     },
     {
         title: "Connections",
         href: "/settings/connections",
+        icon: "roundKey"
     }
 ]
 
@@ -28,7 +35,7 @@ export default async function SettingsLayout({ children }: { children: React.Rea
     };
 
     return (
-        <div className="block flex-1 space-y-6 p-10 pb-16">
+        <div className="block flex-1 space-y-6 p-8 pb-16 md:p-10">
             <div className="space-y-0.5">
                 <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
                 <p className="text-muted-foreground">
