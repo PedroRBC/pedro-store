@@ -48,19 +48,19 @@ export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
             <CardHeader>
                 <CardTitle>{provider.name}</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-row justify-between">
+            <CardContent className="flex flex-row justify-between text-xs md:text-lg">
                 <CardDescription>
                     Use {provider.name} to sign in to your account.
                 </CardDescription>
                 {
                     connected ? (
                         <Button
-                            className="hover:bg-destructive"
+                            className="text-xs hover:bg-destructive md:text-base"
                             onClick={() => handleDisconnect(actualProvider?.id)}
                             disabled={loading}
                         >
                             {loading ? (
-                                <Icons.spinner className="mx-4 h-4 w-4 animate-spin" />
+                                <Icons.spinner className="mx-1 h-4 w-4 animate-spin md:mx-4" />
                             ) : ("Disconnect")}
                         </Button>
                     ) : (
@@ -69,7 +69,7 @@ export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
                                 onClick={handleConnect} disabled={loading}
                             >
                                 {loading ? (
-                                    <Icons.spinner className="mx-4 h-4 w-4 animate-spin" />
+                                    <Icons.spinner className="mx-1 h-4 w-4 animate-spin md:mx-4" />
                                 ) : ("Connect")}
                         </Button>
                     )
