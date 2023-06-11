@@ -20,7 +20,7 @@ interface authState {
 
 const initialState: authState = {
     connections: [],
-    name: localStorage.getItem('name') || "",
+    name: typeof window !== "undefined" ? (window.localStorage.getItem('name') || "") : "",
     hasPassword: false
 };
 
