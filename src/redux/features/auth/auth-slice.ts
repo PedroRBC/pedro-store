@@ -50,6 +50,6 @@ export const providersSlice = createSlice({
     },
 });
 
-export const { setData, removeProvider, logout, setName } = providersSlice.actions;
+export const { setData, removeProvider, logout, setName, setHasPassword } = providersSlice.actions;
 
 export const authReducer = providersSlice.reducer;

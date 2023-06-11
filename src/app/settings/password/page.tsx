@@ -1,3 +1,4 @@
+import { PasswordForm } from "@/components/forms/PasswordForm"
 import { Separator } from "@/components/ui/separator"
 
 export default function SettingsConnectionsPage() {
@@ -10,6 +11,7 @@ export default function SettingsConnectionsPage() {
                 </p>
             </div>
             <Separator />
+            <PasswordForm />
         </div>
     )
 }
