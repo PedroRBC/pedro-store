@@ -13,14 +13,14 @@ import { useAppSelector } from "@/redux/selector";
 import axios from "axios";
 
 import { useDispatch } from "react-redux";
-import { removeProvider } from "@/redux/features/auth/providers-slice";
+import { removeProvider } from "@/redux/features/auth/auth-slice";
 import { useState } from "react";
 import { Icons } from "./icons";
 import { SkeletonProviderCard } from "./skeletons/provider-card";
 
 export function ProviderCard({ provider }: { provider: ClientSafeProvider }) {
     const { status } = useSession()
-    const Providers = useAppSelector(state => state.providers.loggedProviders)
+    const Providers = useAppSelector(state => state.auth.loggedProviders)
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false)
     if (status === "loading") {
