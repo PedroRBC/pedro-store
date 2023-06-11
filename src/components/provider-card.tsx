@@ -13,7 +13,7 @@ import { useAppSelector } from "@/redux/selector";
 import axios from "axios";
 
 import { useDispatch } from "react-redux";
-import { removeProvider } from "@/redux/features/providers/providers-slice";
+import { removeProvider } from "@/redux/features/auth/providers-slice";
 import { useState } from "react";
 import { Icons } from "./icons";
 import { SkeletonProviderCard } from "./skeletons/provider-card";

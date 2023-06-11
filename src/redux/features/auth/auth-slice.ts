@@ -7,11 +7,11 @@ interface loggedProviders {
     provider: string
 }
 
-interface ProvidersState {
+interface authState {
     loggedProviders: loggedProviders[]
 }
 
-const initialState: ProvidersState = {
+const initialState: authState = {
     loggedProviders: []
 };
 
@@ -30,4 +30,4 @@ export const providersSlice = createSlice({
 
 export const { setProviders, removeProvider } = providersSlice.actions;
 
-export const providersReducer = providersSlice.reducer;
+export const authReducer = providersSlice.reducer;

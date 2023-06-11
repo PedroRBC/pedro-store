@@ -5,7 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useSession } from "next-auth/react"
 import { useEffect } from "react";
-import { setProviders } from "@/redux/features/providers/providers-slice";
+import { setProviders } from "@/redux/features/auth/auth-slice";
 
 export function FetchContext({ children }: { children: React.ReactNode }) {
     const { status } = useSession();
@@ -19,7 +19,7 @@ export function FetchContext({ children }: { children: React.ReactNode }) {
             }
             Fetch()
         }
-    }, [status])
+    }, [status, dispatch])
 
     return <> {children} </>
 }
